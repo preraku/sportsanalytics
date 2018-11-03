@@ -44,7 +44,7 @@ try:
         currDate = element.text
 
     # Get last 15 games window
-    for game in range(elementNum - 16, elementNum):
+    for game in range(elementNum - 15, elementNum):
         element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[1]/table/tbody/tr[" + str(game) + "]/td[1]")
         currDate = element.text
         element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[1]/table/tbody/tr[" + str(game) + "]/td[3]/a")
@@ -74,9 +74,9 @@ try:
                     tdText = e.find_element_by_xpath(".//td[" + str(num) + "]").text
                     if tdText != "":
                         # print(tdText)
-                        with open('playbyplay.csv', 'a', newline = '') as outfile:
+                        with open(opponent + '-playbyplay.csv', 'a', newline = '') as outfile:
                             w = csv.writer(outfile)
-                            w.writerow({tdText.replace(",", " ")}) # need to replace commas with spaces because it's csv
+                            w.writerow({tdText.replace(",", "?")}) # need to replace commas with spaces because it's csv
 
         browser.close() # close new window
         browser.switch_to_window(opp_win) # switch back to main window
