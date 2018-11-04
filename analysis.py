@@ -1,74 +1,130 @@
 import re
+import csv
 
 class Analysis:
     players = {}
-    inpArr = ["Ramsey?K singled to third base (0-1 K).",
-              "Wike?T grounded out to 2b (1-1 SB)3a Ramsey?K advanced to third.",
-              "Ramsey?K stole second."]
+    inpArr = []
+    location = ""
+    nonBats = ["stole", "advanced"]
+
+    def __init__(self, location='North_Carolina-playbyplay.csv'):
+        self.location = location
+
+    def loadData(self):
+        f = open(self.location)
+        csv_f = csv.reader(f)
+
+        for row in csv_f:
+            self.inpArr.append(row[0])
 
     def analyze(self):
         for action in self.inpArr:
             action = action.replace("; ", ";").replace("3a ", ';')
             for string in action.split(";"):
                 name = self.getName(string)
-                playType = self.getType(string)
+                typeInt, typeString = self.getType(string)
                 location = self.getLocation(string)
-                print(name + ' ' + playType[1] + ' ' + location[1])
+                if name not in self.players:
+                    self.players[name] = {"singled":
+                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                          "doubled":
+                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                          "tripled":
+                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                          "homered":
+                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                          "stole":
+                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0},
+                                          "scored": 0,
+                                          "advanced": 0,
+                                          "walked": 0,
+                                          "out": 0,
+                                          "popped":
+                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                          "lined":
+                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                          "flied":
+                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                          "grounded":
+                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                          "at bat": 0}
+                if typeInt == 0:
+                    self.players[name][typeString][location] += 1
+                elif typeInt == 1:
+                    self.players[name][typeString] += 1
+                if typeString not in self.nonBats:
+                    self.players[name]["at bat"] += 1
+
             # cross reference names against list of players on that team
 
     '''
-            0 = center
-            1 = left
-            2 = right
-            3 = infield
-            4 = no location given
-        '''
-    def getLocation(self, string):
-        tup = (4, "N/A")
-        center = ["centerfield", " c", "center", "cf"]
-        left = ["left", "lf"]
-        right = ["right", "rf"]
-        other = ["third", "second", "first", "ss", "3b", "2b", "1b", " p"]
-
-        for c in center:
-            if c in string:
-                tup = (0, c)
-                return tup
-        for l in left:
-            if l in string:
-                tup = (1, l)
-                return tup
-        for r in right:
-            if r in string:
-                tup = (2, r)
-                return tup
-        for o in other:
-            if o in string:
-                tup = (3, o)
-                return tup
-
-        return False
-
-
-    '''
-        0 = got on base or run
-        1 = got out
-        2 = not relevant to us
+        0 = has location
+        1 = doesnt have location
+        2 = irrelevant
     '''
     def getType(self, string):
-        positiveTypes = ["singled", "doubled", "tripled", "homered", "walked", "stole", "advanced"]
-        outs = ["out", "popped", "flied", "lined", "grounded", "struck"]
-        for hit in positiveTypes:
-            if hit in string:
-                tup = (0, hit)
+        location = ["singled", "doubled", "tripled", "homered", "popped", "flied", "lined", "grounded", "stole"]
+        noLocation = ["scored", "out", "walked", "advanced"]
+
+        for loc in location:
+            if loc in string:
+                tup = (0, loc)
                 return tup
-        for out in outs:
-            if out in string:
-                tup = (1, out)
+        for no in noLocation:
+            if no in string:
+                tup = (1, no)
                 return tup
+        if "hit by" in string:
+            tup = (1, "walked")
+            return tup
 
         tup = (2, "N/A")
         return tup
+
+    '''
+        0 = center
+        1 = left
+        2 = right
+        3 = infield
+        4 = no location given
+    '''
+    def getLocation(self, string):
+        ret = "N/A"
+        center = ["centerfield", " c", "center", "cf"]
+        left = ["left", "lf"]
+        right = ["right", "rf"]
+        first = ["first", "1b"]
+        second = ["second", "2b"]
+        third = ["third", "3b"]
+        ss = ['ss']
+        top = ["to p"]
+
+        for c in center:
+            if c in string:
+                return "center"
+        for l in left:
+            if l in string:
+                return "left"
+        for r in right:
+            if r in string:
+                return "right"
+        for f in first:
+            if f in string:
+                return "first"
+        for s in second:
+            if s in string:
+                return "second"
+        for t in third:
+            if t in string:
+                return "third"
+        for short in ss:
+            if short in string:
+                return "to ss"
+        for pit in top:
+            if pit in string:
+                return "to pitcher"
+        return ret
+
 
     def getName(self, string):
         if string[-1] == '.':
@@ -80,7 +136,7 @@ class Analysis:
         if '.' in name:
             name = name.split('.')
             name = name[0] + '. ' + name[1].capitalize()
-        elif '?' in name:
+        if '?' in name:
             name = name.split('?')
             name = name[1][0] + '. ' + name[0].capitalize()
         else:
@@ -88,6 +144,12 @@ class Analysis:
 
         return name
 
+    def printPlayers(self):
+        for key in self.players:
+            print(key, self.players[key])
+
 
 analysis = Analysis()
+analysis.loadData()
 analysis.analyze()
+analysis.printPlayers()
