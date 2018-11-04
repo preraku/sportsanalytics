@@ -11,16 +11,42 @@ class Analysis:
             action = action.replace("; ", ";").replace("3a ", ';')
             for string in action.split(";"):
                 name = self.getName(string)
-                type = self.getType(string)
-                print(type)
+                playType = self.getType(string)
                 location = self.getLocation(string)
-                # if type:
-                #     print('good')
-                # else:
-                #     print('bad')
+                print(name + ' ' + playType[1] + ' ' + location[1])
             # cross reference names against list of players on that team
 
+    '''
+            0 = center
+            1 = left
+            2 = right
+            3 = infield
+            4 = no location given
+        '''
     def getLocation(self, string):
+        tup = (4, "N/A")
+        center = ["centerfield", " c", "center", "cf"]
+        left = ["left", "lf"]
+        right = ["right", "rf"]
+        other = ["third", "second", "first", "ss", "3b", "2b", "1b", " p"]
+
+        for c in center:
+            if c in string:
+                tup = (0, c)
+                return tup
+        for l in left:
+            if l in string:
+                tup = (1, l)
+                return tup
+        for r in right:
+            if r in string:
+                tup = (2, r)
+                return tup
+        for o in other:
+            if o in string:
+                tup = (3, o)
+                return tup
+
         return False
 
 
@@ -32,13 +58,13 @@ class Analysis:
     def getType(self, string):
         positiveTypes = ["singled", "doubled", "tripled", "homered", "walked", "stole", "advanced"]
         outs = ["out", "popped", "flied", "lined", "grounded", "struck"]
-        for type in positiveTypes:
-            if type in string:
-                tup = (0, type)
+        for hit in positiveTypes:
+            if hit in string:
+                tup = (0, hit)
                 return tup
-        for type in outs:
-            if type in string:
-                tup = (1, type)
+        for out in outs:
+            if out in string:
+                tup = (1, out)
                 return tup
 
         tup = (2, "N/A")
