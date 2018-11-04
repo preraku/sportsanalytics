@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.btn {
+    border: none;
+    color: white;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.success {background-color: #4CAF50;} /* Green */
+.success:hover {background-color: #46a049;}
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$.get("file:///C:/Users/Anush/Desktop/sportsanalytics/players/",function(response){
+	    document.write(response);
+	    getNames();
+	});
+
+	function getNames()	{
+	    var files = document.querySelectorAll("a.icon.file");
+	    var folders = document.querySelectorAll("a.icon.dir");
+	    files.forEach(function(item){filenames.push(item.textContent)})
+	    folders.forEach(function(item){foldernames.push(item.textContent.slice(0,-1))})
+	    console.log(filenames);
+	    console.log(foldernames);
+	}
+</script>
+</head>
+<body>
+
+<button class="btn success" onclick="temp()">Success</button>
+
+</body>
+</html>
+

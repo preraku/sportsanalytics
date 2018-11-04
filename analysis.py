@@ -8,7 +8,7 @@ class Analysis:
     inpArr = []
 
     def __init__(self, date = "05/10/2018", team = "North Carolina"):
-        self.scrapeSite(date, team)
+        #self.scrapeSite(date, team)
 
         location = team.replace(" ", "_") + '_play_by_play.csv'
         self.loadData(location)
@@ -17,6 +17,22 @@ class Analysis:
     def scrapeSite(self, date, team):
         scraper = Webscrape.Webscrape(date, team)
         scraper.createData()
+
+    def writeToCSV(self):
+        fields = ["center", "left", "right", "first", "second", "third", "N/A", "to ss", "to pitcher"]
+        rows = ["singled", "doubled", "tripled", "homered", "popped", "lined", "flied", "grounded", "at bat", "walked", "out", "advanced", "scored"]
+        for name in self.players:
+            with open("./players/" + name.replace(". ", "_") + ".csv", "w", newline='') as f:
+                writer = csv.writer(f, delimiter=',')
+                writer.writerow([name] + fields)
+                for row in rows:
+                    if type(self.players[name][row]) is int:
+                        temp = [row, self.players[name][row]]
+                    else:
+                        temp = [row] + list(self.players[name][row].values())
+                    writer.writerow(temp)
+
+
 
     def loadData(self, location):
         f = open(location)
@@ -158,8 +174,8 @@ class Analysis:
         for key in self.players:
             print(key, self.players[key])
 
-date = sys.argv[1]
-team = sys.argv[2]
-analysis = Analysis(date, team)
+#date = sys.argv[1]
+#team = sys.argv[2]
+analysis = Analysis()
 analysis.analyze()
-analysis.printPlayers()
+analysis.writeToCSV()

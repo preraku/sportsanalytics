@@ -1,0 +1,14 @@
+T. Wike,center,left,right,first,second,third,N/A,to ss,to pitcher
+singled,0,4,4,6,2,0,0,4,0
+doubled,0,0,0,2,0,0,0,4,0
+tripled,0,0,0,0,0,0,0,2,0
+homered,0,0,0,2,0,0,0,0,0
+popped,0,0,0,0,2,0,2,0,0
+lined,2,0,0,0,0,0,0,0,0
+flied,0,2,0,6,0,0,0,10,0
+grounded,4,0,0,0,8,0,4,0,2
+at bat,116
+walked,8
+out,26
+advanced,8
+scored,10
