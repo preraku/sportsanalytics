@@ -16,8 +16,8 @@ try:
     browser.maximize_window()
 
     # Input data
-    opponent = "Boston College"
-    date = "05/04/2018"
+    opponent = "North Carolina"
+    date = "05/10/2018"
     currDate = ""
     # Find the game that matches desired date
     elementNum = 2
@@ -83,7 +83,7 @@ try:
     # Get opponent's team stats - hitting
     with open(opponent.replace(" ", "_") + '_team_stats_hitting.csv', 'a', encoding='UTF-8', newline = '') as outfile:
         w = csv.writer(outfile)
-        w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "GS", "G", "BA", "OBPct", "SlgPct", "AB", "R", "H", "2B", "3B", "TB", "HR", "IBB", "BB", "HBP", "RBI", "SF", "SH",  "K", "KL", "DP", "GDP", "TP", "SB", "CS", "Picked", "GO", "FO"])
+        w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "GS", "G", "BA", "OBPct", "SlgPct", "AB", "R", "H", "2B", "3B", "TB", "HR", "IBB", "BB", "HBP", "RBI", "SF", "SH",  "K", "KL", "DP", "GDP", "TP", "SB", "CS", "Picked", "GO", "FO", "WOBA"])
 
     element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[2]/table[2]/tbody/tr[13]/td/a")
     element.click()
@@ -96,6 +96,12 @@ try:
             values = []
             for c in column:
                 values.append(c.text)
+
+            slug = row.find_element_by_xpath(".//td[11]/div").text
+            obp = row.find_element_by_xpath(".//td[10]/div").text
+            if slug != "" and obp != "":
+                values.append("%.3f" % ((float(slug)+(float(obp)*2))/3))
+
             with open(opponent.replace(" ", "_") + '_team_stats_hitting.csv', 'a', encoding='UTF-8', newline = '') as outfile:
                 w = csv.writer(outfile)
                 w.writerow(values)
