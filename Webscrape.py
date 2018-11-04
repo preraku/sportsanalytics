@@ -227,7 +227,7 @@ class Webscrape:
     def createData(self):
         try:
             # Input data
-            date = dt.strptime("05/09/2018", "%m/%d/%Y") # will be today's date
+            date = dt.strptime("04/05/2018", "%m/%d/%Y") # will be today's date
             currDate = dt.strptime("01/01/1970", "%m/%d/%Y")
             # Find the game that matches desired date
             elementFromText = ""
@@ -281,6 +281,3 @@ class Webscrape:
             print(e)
             self.browser.quit()
         self.browser.quit()
-
-webscrape = Webscrape(sys.argv[1])
-webscrape.createData()

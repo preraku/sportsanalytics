@@ -9,14 +9,14 @@ class Analysis:
     inpArr = []
     team = ""
 
-    def __init__(self, date = "05/10/2018", team = "North Carolina"):
-        self.scrapeSite(date, team)
+    def __init__(self, team = "North Carolina"):
+        self.scrapeSite(team)
         self.team = team
         location = team.replace(" ", "_") + '_play_by_play.csv'
         self.loadData(location)
 
-    def scrapeSite(self, date, team):
-        scraper = Webscrape.Webscrape(date, team)
+    def scrapeSite(self, team):
+        scraper = Webscrape.Webscrape(team)
         scraper.createData()
 
     def makeMyDir(self, name):
@@ -188,8 +188,8 @@ class Analysis:
         for key in self.players:
             print(key, self.players[key])
 
-date = sys.argv[1]
-team = sys.argv[2]
-analysis = Analysis()
+
+team = sys.argv[1]
+analysis = Analysis(team)
 analysis.analyze()
 analysis.writeToCSV()
