@@ -11,38 +11,8 @@ options.set_headless(headless=True)
 browser = webdriver.Firefox(firefox_options=options, executable_path=r'C:/Users/com93/Desktop/geckodriver.exe') #C Change executable_path in order to use geckodriver
 url = 'http://stats.ncaa.org/teams/312390'
 
-try:
-    browser.get(url)
-    browser.maximize_window()
-
-    # Input data
-    opponent = "Virginia Tech"
-    date = "04/27/2018"
-    currDate = ""
-    # Find the game that matches desired date
-    elementNum = 2
-    while date != currDate:
-        elementNum += 1
-        element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[1]/table/tbody/tr[" + str(elementNum) + "]/td[1]")
-        currDate = element.text
-
-    # Open the opponent team's webpage
-    element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[1]/table/tbody/tr[" + str(elementNum) + "]/td[2]/a")
-    element.click()
-    sleep(8)
-
-    opp_win = browser.current_window_handle # Opponent window
-
-    # Find past 15 games played by the opponent
-    currDate = ""
-    # Find the game that matches desired date
-    elementNum = 2
-    while date != currDate:
-        elementNum += 1
-        element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[1]/table/tbody/tr[" + str(elementNum) + "]/td[1]")
-        currDate = element.text
-
-    # Get last 15 games window
+# Get last 15 games window
+def getPlayByPlayData():
     for game in range(elementNum - 15, elementNum):
         element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[1]/table/tbody/tr[" + str(game) + "]/td[1]")
         currDate = element.text
@@ -80,7 +50,8 @@ try:
         browser.close() # close new window
         browser.switch_to_window(opp_win) # switch back to main window
 
-    # Get opponent's team stats - hitting
+# Get opponent's team stats - hitting
+def getOverallHittingStat():
     with open(opponent.replace(" ", "_") + '_team_stats_hitting.csv', 'a', encoding='UTF-8', newline = '') as outfile:
         w = csv.writer(outfile)
         w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "GS", "G", "BA", "OBPct", "SlgPct", "AB", "R", "H", "2B", "3B", "TB", "HR", "IBB", "BB", "HBP", "RBI", "SF", "SH",  "K", "KL", "DP", "GDP", "TP", "SB", "CS", "Picked", "GO", "FO", "WOBA"])
@@ -106,7 +77,8 @@ try:
                 w = csv.writer(outfile)
                 w.writerow(values)
 
-    # Get stats vs. LHP
+# Get stats vs. LHP
+def getLHPHittingStat():
     with open(opponent.replace(" ", "_") + '_team_stats_hitting_LHP.csv', 'a', encoding='UTF-8', newline = '') as outfile:
         w = csv.writer(outfile)
         w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "GS", "G", "BA", "OBPct", "SlgPct", "AB", "R", "H", "2B", "3B", "TB", "HR", "IBB", "BB", "HBP", "RBI", "SF", "SH",  "K", "KL", "DP", "GDP", "TP", "SB", "CS", "Picked", "GO", "FO", "WOBA"])
@@ -131,7 +103,8 @@ try:
             w = csv.writer(outfile)
             w.writerow(values)
 
-    # Get stats vs. RHP
+# Get stats vs. RHP
+def getRHPHittingStat():
     with open(opponent.replace(" ", "_") + '_team_stats_hitting_RHP.csv', 'a', encoding='UTF-8', newline = '') as outfile:
         w = csv.writer(outfile)
         w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "GS", "G", "BA", "OBPct", "SlgPct", "AB", "R", "H", "2B", "3B", "TB", "HR", "IBB", "BB", "HBP", "RBI", "SF", "SH",  "K", "KL", "DP", "GDP", "TP", "SB", "CS", "Picked", "GO", "FO", "WOBA"])
@@ -156,7 +129,8 @@ try:
             w = csv.writer(outfile)
             w.writerow(values)
 
-    # Get opponent's team stats - pitching
+# Get opponent's team stats - pitching
+def getOverallPitchingStat():
     with open(opponent.replace(" ", "_") + '_team_stats_pitching.csv', 'a', encoding='UTF-8', newline = '') as outfile:
         w = csv.writer(outfile)
         w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "ERA", "IP", "HA", "R", "ER", "BB", "SO", "SHO", "BF", "P-OAB", "2B-A", "3B-A", "HR-A", "CSO", "WP", "BK", "HB", "KL", "IBB", "CG", "Inh Run", "Inh Run Score", "SHA", "SFA", "CIA", "GO", "FO", "W", "L", "SV"])
@@ -176,6 +150,7 @@ try:
                 w = csv.writer(outfile)
                 w.writerow(values)
 
+def getLHBPitchingStat():
     # Get stats vs. LHB
     with open(opponent.replace(" ", "_") + '_team_stats_pitching_LHB.csv', 'a', encoding='UTF-8', newline = '') as outfile:
         w = csv.writer(outfile)
@@ -195,6 +170,7 @@ try:
             w = csv.writer(outfile)
             w.writerow(values)
 
+def getRHBPitchingStat():
     # Get stats vs. RHB
     with open(opponent.replace(" ", "_") + '_team_stats_pitching_RHB.csv', 'a', encoding='UTF-8', newline = '') as outfile:
         w = csv.writer(outfile)
@@ -214,6 +190,50 @@ try:
             w = csv.writer(outfile)
             w.writerow(values)
 
+try:
+    browser.get(url)
+    browser.maximize_window()
+
+    # Input data
+    opponent = "Virginia Tech"
+    date = "04/27/2018"
+    currDate = ""
+    # Find the game that matches desired date
+    elementNum = 2
+    while date != currDate:
+        elementNum += 1
+        element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[1]/table/tbody/tr[" + str(elementNum) + "]/td[1]")
+        currDate = element.text
+
+    # Open the opponent team's webpage
+    element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[1]/table/tbody/tr[" + str(elementNum) + "]/td[2]/a")
+    element.click()
+    sleep(8)
+
+    opp_win = browser.current_window_handle # Opponent window
+
+    # Find past 15 games played by the opponent
+    currDate = ""
+    # Find the game that matches desired date
+    elementNum = 2
+    while date != currDate:
+        elementNum += 1
+        element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[1]/table/tbody/tr[" + str(elementNum) + "]/td[1]")
+        currDate = element.text
+
+    getPlayByPlayData()
+
+    getOverallHittingStat()
+
+    getLHPHittingStat()
+
+    getRHPHittingStat()
+
+    getOverallPitchingStat()
+
+    getLHBPitchingStat()
+
+    getRHBPitchingStat()
     # Get opponent's team stats - fielding
     with open(opponent.replace(" ", "_") + '_team_stats_fielding.csv', 'a', encoding='UTF-8', newline = '') as outfile:
         w = csv.writer(outfile)
@@ -237,7 +257,3 @@ except Exception as e:
     print(e)
     browser.quit()
 browser.quit()
-
-
-# def testFunction():
-#     print("It's working")

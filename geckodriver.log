@@ -3272,3 +3272,21 @@ JavaScript error: http://stats.ncaa.org/assets/application-ec717494084dffd235da5
 1541299222269	Marionette	DEBUG	[6442450945] Received DOM event DOMContentLoaded for http://stats.ncaa.org/team/742/stats/13430
 1541299222361	Marionette	DEBUG	[6442450945] Received DOM event pageshow for http://stats.ncaa.org/team/742/stats/13430
 1541299226475	Marionette	INFO	Stopped listening on port 64528
+1541299794706	geckodriver	INFO	geckodriver 0.19.1
+1541299794721	geckodriver	INFO	Listening on 127.0.0.1:51735
+1541299797861	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-headless" "-profile" "C:\\Users\\com93\\AppData\\Local\\Temp\\rust_mozprofile.Gflamuuhmwu4"
+*** You are running in headless mode.
+1541299800086	Marionette	INFO	Listening on port 51752
+1541299800989	Marionette	WARN	TLS certificate errors will be ignored for this session
+1541299801025	Marionette	DEBUG	[6442450945] Frame script loaded
+1541299801028	Marionette	DEBUG	[6442450945] Frame script registered
+1541299801042	Marionette	INFO	Stopped listening on port 51752
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+1541299865070	geckodriver	INFO	geckodriver 0.19.1
+1541299865081	geckodriver	INFO	Listening on 127.0.0.1:51883
+1541299868211	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-headless" "-profile" "C:\\Users\\com93\\AppData\\Local\\Temp\\rust_mozprofile.ZGpxaSfWnSqm"
+*** You are running in headless mode.
+1541299870477	Marionette	INFO	Listening on port 51896
+1541299871333	Marionette	WARN	TLS certificate errors will be ignored for this session
+1541299871360	Marionette	DEBUG	[6442450945] Frame script loaded
+1541299871361	Marionette	DEBUG	[6442450945] Frame script registered
