@@ -7,7 +7,7 @@ import csv
 
 # browser = webdriver.Firefox()
 options = Options()
-options.set_headless(headless=True)
+options.set_headless(headless=False)
 browser = webdriver.Firefox(firefox_options=options, executable_path=r'C:/Users/com93/Desktop/geckodriver.exe')
 url = 'http://stats.ncaa.org/teams/312390'
 
@@ -74,23 +74,71 @@ try:
                     tdText = e.find_element_by_xpath(".//td[" + str(num) + "]").text
                     if tdText != "":
                         # print(tdText)
-                        with open(opponent + '-playbyplay.csv', 'a', newline = '') as outfile:
+                        with open(opponent + '-playbyplay.csv', 'a', encoding='UTF-8', newline = '') as outfile:
                             w = csv.writer(outfile)
                             w.writerow({tdText.replace(",", "?")}) # need to replace commas with spaces because it's csv
 
         browser.close() # close new window
         browser.switch_to_window(opp_win) # switch back to main window
 
-    # # Get opponent's team stats
-    # element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[2]/table[2]/tbody/tr[13]/td/a")
-    # element.click()
-    # sleep(5)
+    # Get opponent's team stats - hitting
+    with open(opponent + '-teamstats-hitting.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+        w = csv.writer(outfile)
+        w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "GS", "G", "BA", "OBPct", "SlgPct", "AB", "R", "H", "2B", "3B", "TB", "HR", "IBB", "BB", "HBP", "RBI", "SF", "SH",  "K", "KL", "DP", "GDP", "TP", "SB", "CS", "Picked", "GO", "FO"])
 
-    # element = browser.find_elements_by_xpath("//*[@id=\"stat_grid\"]/tbody/tr")
-    # for row in element:
-    #     column = row.find_elements_by_xpath(".//td")
-    #     for c in column:
-    #         print(c.text)
+    element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[2]/table[2]/tbody/tr[13]/td/a")
+    element.click()
+    sleep(5)
+
+    element = browser.find_elements_by_xpath("//*[@id=\"stat_grid\"]/tbody/tr")
+    for row in element:
+        if row.find_element_by_xpath(".//td[12]/div").text != "":
+            column = row.find_elements_by_xpath(".//td")
+            values = []
+            for c in column:
+                values.append(c.text)
+            with open(opponent + '-teamstats-hitting.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+                w = csv.writer(outfile)
+                w.writerow(values)
+
+    # Get opponent's team stats - pitching
+    with open(opponent + '-teamstats-pitching.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+        w = csv.writer(outfile)
+        w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "ERA", "IP", "HA", "R", "ER", "BB", "SO", "SHO", "BF", "P-OAB", "2B-A", "3B-A", "HR-A", "CSO", "WP", "BK", "HB", "KL", "IBB", "CG", "Inh Run", "Inh Run Score", "SHA", "SFA", "CIA", "GO", "FO", "W", "L", "SV"])
+
+    element = browser.find_element_by_xpath("//*[@id=\"stats_div\"]/table[1]/tbody/tr/td[2]/a")
+    element.click()
+    sleep(3)
+
+    element = browser.find_elements_by_xpath("//*[@id=\"stat_grid\"]/tbody/tr")
+    for row in element:
+        if row.find_element_by_xpath(".//td[7]/div").text != "":
+            column = row.find_elements_by_xpath(".//td")
+            values = []
+            for c in column:
+                values.append(c.text)
+            with open(opponent + '-teamstats-pitching.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+                w = csv.writer(outfile)
+                w.writerow(values)
+
+    # Get opponent's team stats - fielding
+    with open(opponent + '-teamstats-fielding.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+        w = csv.writer(outfile)
+        w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "GS", "PO", "A", "E", "FldPct", "CI", "PB", "SBA", "CSB", "TC", "IDP", "ITP"])
+
+    element = browser.find_element_by_xpath("//*[@id=\"stats_div\"]/table[1]/tbody/tr/td[3]/a")
+    element.click()
+    sleep(3)
+
+    element = browser.find_elements_by_xpath("//*[@id=\"stat_grid\"]/tbody/tr")
+    for row in element:
+        column = row.find_elements_by_xpath(".//td")
+        values = []
+        for c in column:
+            values.append(c.text)
+        with open(opponent + '-teamstats-fielding.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+            w = csv.writer(outfile)
+            w.writerow(values)
 
 except Exception as e:
     print(e)
