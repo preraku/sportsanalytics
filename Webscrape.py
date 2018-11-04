@@ -16,8 +16,8 @@ try:
     browser.maximize_window()
 
     # Input data
-    opponent = "North Carolina"
-    date = "05/10/2018"
+    opponent = "Virginia Tech"
+    date = "04/27/2018"
     currDate = ""
     # Find the game that matches desired date
     elementNum = 2
@@ -106,6 +106,56 @@ try:
                 w = csv.writer(outfile)
                 w.writerow(values)
 
+    # Get stats vs. LHP
+    with open(opponent.replace(" ", "_") + '_team_stats_hitting_LHP.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+        w = csv.writer(outfile)
+        w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "GS", "G", "BA", "OBPct", "SlgPct", "AB", "R", "H", "2B", "3B", "TB", "HR", "IBB", "BB", "HBP", "RBI", "SF", "SH",  "K", "KL", "DP", "GDP", "TP", "SB", "CS", "Picked", "GO", "FO", "WOBA"])
+
+    element = browser.find_element_by_xpath("//*[@id=\"available_stat_id\"]/option[4]")
+    element.click()
+    sleep(3)
+
+    element = browser.find_elements_by_xpath("//*[@id=\"stat_grid\"]/tbody/tr")
+    for row in element:
+        column = row.find_elements_by_xpath(".//td")
+        values = []
+        for c in column:
+            values.append(c.text)
+
+        slug = row.find_element_by_xpath(".//td[11]/div").text
+        obp = row.find_element_by_xpath(".//td[10]/div").text
+        if slug != "" and obp != "":
+            values.append("%.3f" % ((float(slug)+(float(obp)*2))/3))
+
+        with open(opponent.replace(" ", "_") + '_team_stats_hitting_LHP.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+            w = csv.writer(outfile)
+            w.writerow(values)
+
+    # Get stats vs. RHP
+    with open(opponent.replace(" ", "_") + '_team_stats_hitting_RHP.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+        w = csv.writer(outfile)
+        w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "GS", "G", "BA", "OBPct", "SlgPct", "AB", "R", "H", "2B", "3B", "TB", "HR", "IBB", "BB", "HBP", "RBI", "SF", "SH",  "K", "KL", "DP", "GDP", "TP", "SB", "CS", "Picked", "GO", "FO", "WOBA"])
+
+    element = browser.find_element_by_xpath("//*[@id=\"available_stat_id\"]/option[5]")
+    element.click()
+    sleep(3)
+
+    element = browser.find_elements_by_xpath("//*[@id=\"stat_grid\"]/tbody/tr")
+    for row in element:
+        column = row.find_elements_by_xpath(".//td")
+        values = []
+        for c in column:
+            values.append(c.text)
+
+        slug = row.find_element_by_xpath(".//td[11]/div").text
+        obp = row.find_element_by_xpath(".//td[10]/div").text
+        if slug != "" and obp != "":
+            values.append("%.3f" % ((float(slug)+(float(obp)*2))/3))
+
+        with open(opponent.replace(" ", "_") + '_team_stats_hitting_RHP.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+            w = csv.writer(outfile)
+            w.writerow(values)
+
     # Get opponent's team stats - pitching
     with open(opponent.replace(" ", "_") + '_team_stats_pitching.csv', 'a', encoding='UTF-8', newline = '') as outfile:
         w = csv.writer(outfile)
@@ -125,6 +175,44 @@ try:
             with open(opponent.replace(" ", "_") + '_team_stats_pitching.csv', 'a', encoding='UTF-8', newline = '') as outfile:
                 w = csv.writer(outfile)
                 w.writerow(values)
+
+    # Get stats vs. LHB
+    with open(opponent.replace(" ", "_") + '_team_stats_pitching_LHB.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+        w = csv.writer(outfile)
+        w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "App", "GS", "ERA", "IP", "HA", "R", "ER", "BB", "SO", "SHO", "BF", "P-OAB", "2B-A", "3B-A", "HR-A", "CSO", "WP", "BK", "HB", "KL", "IBB", "CG", "Inh Run", "Inh Run Score", "SHA", "SFA", "CIA", "GO", "FO", "W", "L", "SV"])
+
+    element = browser.find_element_by_xpath("//*[@id=\"available_stat_id\"]/option[4]")
+    element.click()
+    sleep(3)
+
+    element = browser.find_elements_by_xpath("//*[@id=\"stat_grid\"]/tbody/tr")
+    for row in element:
+        column = row.find_elements_by_xpath(".//td")
+        values = []
+        for c in column:
+            values.append(c.text)
+        with open(opponent.replace(" ", "_") + '_team_stats_pitching_LHB.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+            w = csv.writer(outfile)
+            w.writerow(values)
+
+    # Get stats vs. RHB
+    with open(opponent.replace(" ", "_") + '_team_stats_pitching_RHB.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+        w = csv.writer(outfile)
+        w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "App", "GS", "ERA", "IP", "HA", "R", "ER", "BB", "SO", "SHO", "BF", "P-OAB", "2B-A", "3B-A", "HR-A", "CSO", "WP", "BK", "HB", "KL", "IBB", "CG", "Inh Run", "Inh Run Score", "SHA", "SFA", "CIA", "GO", "FO", "W", "L", "SV"])
+
+    element = browser.find_element_by_xpath("//*[@id=\"available_stat_id\"]/option[11]")
+    element.click()
+    sleep(3)
+
+    element = browser.find_elements_by_xpath("//*[@id=\"stat_grid\"]/tbody/tr")
+    for row in element:
+        column = row.find_elements_by_xpath(".//td")
+        values = []
+        for c in column:
+            values.append(c.text)
+        with open(opponent.replace(" ", "_") + '_team_stats_pitching_RHB.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+            w = csv.writer(outfile)
+            w.writerow(values)
 
     # Get opponent's team stats - fielding
     with open(opponent.replace(" ", "_") + '_team_stats_fielding.csv', 'a', encoding='UTF-8', newline = '') as outfile:
@@ -149,3 +237,7 @@ except Exception as e:
     print(e)
     browser.quit()
 browser.quit()
+
+
+# def testFunction():
+#     print("It's working")
