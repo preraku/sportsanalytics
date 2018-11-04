@@ -1,0 +1,14 @@
+x,center,left,right,first,second,third,N/A,to ss,to pitcher
+singled,1,0,1,0,0,0,2,0,0
+doubled,2,1,1,0,0,0,0,0,0
+tripled,0,0,0,0,0,0,0,0,0
+homered,0,1,0,0,0,0,0,0,0
+popped,0,0,0,0,0,0,0,1,0
+lined,0,0,0,0,0,0,0,0,0
+flied,1,1,2,0,0,0,0,0,0
+grounded,0,0,0,0,0,3,0,3,2
+at bat,48
+walked,7
+out,12
+advanced,6
+scored,7
