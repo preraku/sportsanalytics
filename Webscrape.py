@@ -7,8 +7,8 @@ import csv
 
 # browser = webdriver.Firefox()
 options = Options()
-options.set_headless(headless=False)
-browser = webdriver.Firefox(firefox_options=options, executable_path=r'C:/Users/com93/Desktop/geckodriver.exe')
+options.set_headless(headless=True)
+browser = webdriver.Firefox(firefox_options=options, executable_path=r'C:/Users/com93/Desktop/geckodriver.exe') #C Change executable_path in order to use geckodriver
 url = 'http://stats.ncaa.org/teams/312390'
 
 try:
@@ -34,7 +34,6 @@ try:
     opp_win = browser.current_window_handle # Opponent window
 
     # Find past 15 games played by the opponent
-    date = "05/10/2018"
     currDate = ""
     # Find the game that matches desired date
     elementNum = 2
@@ -74,7 +73,7 @@ try:
                     tdText = e.find_element_by_xpath(".//td[" + str(num) + "]").text
                     if tdText != "":
                         # print(tdText)
-                        with open(opponent + '-playbyplay.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+                        with open(opponent.replace(" ", "_") + '_play_by_play.csv', 'a', encoding='UTF-8', newline = '') as outfile:
                             w = csv.writer(outfile)
                             w.writerow({tdText.replace(",", "?")}) # need to replace commas with spaces because it's csv
 
@@ -82,13 +81,13 @@ try:
         browser.switch_to_window(opp_win) # switch back to main window
 
     # Get opponent's team stats - hitting
-    with open(opponent + '-teamstats-hitting.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+    with open(opponent.replace(" ", "_") + '_team_stats_hitting.csv', 'a', encoding='UTF-8', newline = '') as outfile:
         w = csv.writer(outfile)
-        w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "GS", "G", "BA", "OBPct", "SlgPct", "AB", "R", "H", "2B", "3B", "TB", "HR", "IBB", "BB", "HBP", "RBI", "SF", "SH",  "K", "KL", "DP", "GDP", "TP", "SB", "CS", "Picked", "GO", "FO"])
+        w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "GS", "G", "BA", "OBPct", "SlgPct", "AB", "R", "H", "2B", "3B", "TB", "HR", "IBB", "BB", "HBP", "RBI", "SF", "SH",  "K", "KL", "DP", "GDP", "TP", "SB", "CS", "Picked", "GO", "FO", "WOBA"])
 
     element = browser.find_element_by_xpath("//*[@id=\"contentarea\"]/table/tbody/tr/td[2]/table[2]/tbody/tr[13]/td/a")
     element.click()
-    sleep(5)
+    sleep(3)
 
     element = browser.find_elements_by_xpath("//*[@id=\"stat_grid\"]/tbody/tr")
     for row in element:
@@ -97,12 +96,18 @@ try:
             values = []
             for c in column:
                 values.append(c.text)
-            with open(opponent + '-teamstats-hitting.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+
+            slug = row.find_element_by_xpath(".//td[11]/div").text
+            obp = row.find_element_by_xpath(".//td[10]/div").text
+            if slug != "" and obp != "":
+                values.append("%.3f" % ((float(slug)+(float(obp)*2))/3))
+
+            with open(opponent.replace(" ", "_") + '_team_stats_hitting.csv', 'a', encoding='UTF-8', newline = '') as outfile:
                 w = csv.writer(outfile)
                 w.writerow(values)
 
     # Get opponent's team stats - pitching
-    with open(opponent + '-teamstats-pitching.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+    with open(opponent.replace(" ", "_") + '_team_stats_pitching.csv', 'a', encoding='UTF-8', newline = '') as outfile:
         w = csv.writer(outfile)
         w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "ERA", "IP", "HA", "R", "ER", "BB", "SO", "SHO", "BF", "P-OAB", "2B-A", "3B-A", "HR-A", "CSO", "WP", "BK", "HB", "KL", "IBB", "CG", "Inh Run", "Inh Run Score", "SHA", "SFA", "CIA", "GO", "FO", "W", "L", "SV"])
 
@@ -117,12 +122,12 @@ try:
             values = []
             for c in column:
                 values.append(c.text)
-            with open(opponent + '-teamstats-pitching.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+            with open(opponent.replace(" ", "_") + '_team_stats_pitching.csv', 'a', encoding='UTF-8', newline = '') as outfile:
                 w = csv.writer(outfile)
                 w.writerow(values)
 
     # Get opponent's team stats - fielding
-    with open(opponent + '-teamstats-fielding.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+    with open(opponent.replace(" ", "_") + '_team_stats_fielding.csv', 'a', encoding='UTF-8', newline = '') as outfile:
         w = csv.writer(outfile)
         w.writerow(["Jersey", "Player", "Yr", "Pos", "GP", "GS", "GS", "PO", "A", "E", "FldPct", "CI", "PB", "SBA", "CSB", "TC", "IDP", "ITP"])
 
@@ -136,7 +141,7 @@ try:
         values = []
         for c in column:
             values.append(c.text)
-        with open(opponent + '-teamstats-fielding.csv', 'a', encoding='UTF-8', newline = '') as outfile:
+        with open(opponent.replace(" ", "_") + '_team_stats_fielding.csv', 'a', encoding='UTF-8', newline = '') as outfile:
             w = csv.writer(outfile)
             w.writerow(values)
 
