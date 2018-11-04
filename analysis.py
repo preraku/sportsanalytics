@@ -1,27 +1,25 @@
 import re
 import csv
 import sys
+import Webscrape
 
 class Analysis:
     players = {}
     inpArr = []
-    team = ""
-    location = ""
-    date = ""
 
     def __init__(self, date = "05/10/2018", team = "North Carolina"):
-        self.team = team
-        self.date = date
-        self.scrapeSite()
-        self.loadData()
-        # location = 'North_Carolina-playbyplay.csv'
+        self.scrapeSite(date, team)
+
+        location = team.replace(" ", "_") + '_play_by_play.csv'
+        self.loadData(location)
         # self.location = location
 
-    def scrapeSite(self):
-        #Webstuffs
+    def scrapeSite(self, date, team):
+        scraper = Webscrape.Webscrape(date, team)
+        scraper.createData()
 
-    def loadData(self):
-        f = open(self.location)
+    def loadData(self, location):
+        f = open(location)
         csv_f = csv.reader(f)
 
         for row in csv_f:
