@@ -84,6 +84,8 @@ class Webscrape:
                 obp = row.find_element_by_xpath(".//td[10]/div").text
                 if slug != "" and obp != "":
                     values.append("%.3f" % ((float(slug)+(float(obp)*2))/3))
+                else:
+                    values.append("")
 
                 with open(self.opponent.replace(" ", "_") + '_team_stats_hitting.csv', 'a', encoding='UTF-8', newline = '') as outfile:
                     w = csv.writer(outfile)
