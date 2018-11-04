@@ -2,37 +2,51 @@ import re
 import csv
 import sys
 import Webscrape
+import os
 
 class Analysis:
     players = {}
     inpArr = []
+    team = ""
 
     def __init__(self, date = "05/10/2018", team = "North Carolina"):
-        #self.scrapeSite(date, team)
-
+        self.scrapeSite(date, team)
+        self.team = team
         location = team.replace(" ", "_") + '_play_by_play.csv'
         self.loadData(location)
-        # self.location = location
 
     def scrapeSite(self, date, team):
         scraper = Webscrape.Webscrape(date, team)
         scraper.createData()
 
+    def makeMyDir(self, name):
+        try:
+            os.makedirs(name)
+        except OSError:
+            pass
+
     def writeToCSV(self):
         fields = ["center", "left", "right", "first", "second", "third", "N/A", "to ss", "to pitcher"]
         rows = ["singled", "doubled", "tripled", "homered", "popped", "lined", "flied", "grounded", "at bat", "walked", "out", "advanced", "scored"]
+
+        self.makeMyDir("./" + self.team.replace(" ", "_"))
+
+        with open("./" + self.team.replace(" ", "_") + "/players.csv", "w", newline='') as f:
+            names = csv.writer(f, delimiter=",")
+            names.writerow(['Name'])
+            for name in self.players:
+                names.writerow([name])
+
         for name in self.players:
-            with open("./players/" + name.replace(". ", "_") + ".csv", "w", newline='') as f:
+            with open("./" + self.team.replace(" ", "_") + "/" + name.replace(". ", "_") + ".csv", "w", newline='') as f:
                 writer = csv.writer(f, delimiter=',')
-                writer.writerow([name] + fields)
+                writer.writerow(["x"] + fields)
                 for row in rows:
                     if type(self.players[name][row]) is int:
                         temp = [row, self.players[name][row]]
                     else:
                         temp = [row] + list(self.players[name][row].values())
                     writer.writerow(temp)
-
-
 
     def loadData(self, location):
         f = open(location)
@@ -174,8 +188,8 @@ class Analysis:
         for key in self.players:
             print(key, self.players[key])
 
-#date = sys.argv[1]
-#team = sys.argv[2]
+date = sys.argv[1]
+team = sys.argv[2]
 analysis = Analysis()
 analysis.analyze()
 analysis.writeToCSV()
