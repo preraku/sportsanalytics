@@ -24,36 +24,37 @@ class Analysis:
                 name = self.getName(string)
                 typeInt, typeString = self.getType(string)
                 location = self.getLocation(string)
-                if name not in self.players:
-                    self.players[name] = {"singled":
-                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
-                                          "doubled":
-                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
-                                          "tripled":
-                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
-                                          "homered":
-                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
-                                          "stole":
-                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0},
-                                          "scored": 0,
-                                          "advanced": 0,
-                                          "walked": 0,
-                                          "out": 0,
-                                          "popped":
-                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
-                                          "lined":
-                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
-                                          "flied":
-                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
-                                          "grounded":
-                                              {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
-                                          "at bat": 0}
-                if typeInt == 0:
-                    self.players[name][typeString][location] += 1
-                elif typeInt == 1:
-                    self.players[name][typeString] += 1
-                if typeString not in self.nonBats:
-                    self.players[name]["at bat"] += 1
+                if typeInt is not 2:
+                    if name not in self.players:
+                        self.players[name] = {"singled":
+                                                  {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                              "doubled":
+                                                  {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                              "tripled":
+                                                  {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                              "homered":
+                                                  {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                              "stole":
+                                                  {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0},
+                                              "scored": 0,
+                                              "advanced": 0,
+                                              "walked": 0,
+                                              "out": 0,
+                                              "popped":
+                                                  {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                              "lined":
+                                                  {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                              "flied":
+                                                  {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                              "grounded":
+                                                  {"center": 0, "left": 0, "right": 0, "first": 0, "second": 0, "third": 0, "N/A": 0, "to ss": 0, "to pitcher": 0},
+                                              "at bat": 0}
+                    if typeInt == 0:
+                        self.players[name][typeString][location] += 1
+                    elif typeInt == 1:
+                        self.players[name][typeString] += 1
+                    if typeString not in self.nonBats:
+                        self.players[name]["at bat"] += 1
 
             # cross reference names against list of players on that team
 
