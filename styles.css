@@ -1,0 +1,9 @@
+td, th {
+  padding: 1px;
+  padding-left: 50px;
+}
+
+thead, tbody {
+  padding: 1px;
+  padding-left: 50px;
+}
