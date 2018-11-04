@@ -1,14 +1,24 @@
 import re
 import csv
+import sys
 
 class Analysis:
     players = {}
     inpArr = []
+    team = ""
     location = ""
-    nonBats = ["stole", "advanced"]
+    date = ""
 
-    def __init__(self, location='North_Carolina-playbyplay.csv'):
-        self.location = location
+    def __init__(self, date = "05/10/2018", team = "North Carolina"):
+        self.team = team
+        self.date = date
+        self.scrapeSite()
+        self.loadData()
+        # location = 'North_Carolina-playbyplay.csv'
+        # self.location = location
+
+    def scrapeSite(self):
+        #Webstuffs
 
     def loadData(self):
         f = open(self.location)
@@ -18,6 +28,7 @@ class Analysis:
             self.inpArr.append(row[0])
 
     def analyze(self):
+        nonBats = ["stole", "advanced"]
         for action in self.inpArr:
             action = action.replace("; ", ";").replace("3a ", ';')
             for string in action.split(";"):
@@ -53,7 +64,7 @@ class Analysis:
                         self.players[name][typeString][location] += 1
                     elif typeInt == 1:
                         self.players[name][typeString] += 1
-                    if typeString not in self.nonBats:
+                    if typeString not in nonBats:
                         self.players[name]["at bat"] += 1
 
             # cross reference names against list of players on that team
@@ -149,8 +160,8 @@ class Analysis:
         for key in self.players:
             print(key, self.players[key])
 
-
-analysis = Analysis()
-analysis.loadData()
+date = sys.argv[1]
+team = sys.argv[2]
+analysis = Analysis(date, team)
 analysis.analyze()
 analysis.printPlayers()
