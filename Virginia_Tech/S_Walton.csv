@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 x,center,left,right,first,second,third,N/A,to ss,to pitcher
 singled,1,1,1,0,0,1,4,0,0
 doubled,3,0,0,0,0,0,0,0,0
@@ -13,19 +12,3 @@ walked,9
 out,7
 advanced,8
 scored,0
-=======
-x,center,left,right,first,second,third,N/A,to ss,to pitcher
-singled,1,1,1,0,0,1,4,0,0
-doubled,3,0,0,0,0,0,0,0,0
-tripled,0,0,0,0,0,0,0,0,0
-homered,0,0,0,0,0,0,0,0,0
-popped,0,0,0,0,0,0,0,2,0
-lined,0,0,0,0,2,0,0,1,1
-flied,1,0,1,0,0,0,0,0,0
-grounded,0,0,0,1,2,2,0,8,2
-at bat,50
-walked,9
-out,7
-advanced,8
-scored,0
->>>>>>> e90c9cd931cefe25ffa88b0bf838963594fddaab
